@@ -44,7 +44,7 @@ const Register = () => {
               <input type="text" name="name" className="input" placeholder="Your Name" required />
 
               {/* Photo Url */}
-              <label className="label">Email</label>
+              <label className="label">Photo</label>
               <input type="text" name="photo" className="input" placeholder="Photo URL" required />
 
               {/* Email */}
