@@ -1,9 +1,15 @@
-import React, { use } from 'react';
-import { Link } from 'react-router';
+import React, { use, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router';
 import { AuthContext } from '../provider/AuthProvider';
 
 const Login = () => {
+  const [error, setError] = useState(" ")
 const {signIn} = use(AuthContext);
+const location = useLocation();
+console.log(location);
+
+const navigate = useNavigate();
+
     const handleLogin= (e)=>{
         e.preventDefault();
         console.log(e.target);
@@ -13,11 +19,13 @@ const {signIn} = use(AuthContext);
         console.log({email, password});
         signIn(email, password).then((result)=>{
             const user = result.user;
-            console.log(user)
+            console.log(user);
+            navigate(`${location.state? location.state : "/" }`)
         }).catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
-            alert (errorCode, errorMessage);
+            // alert (errorCode, errorMessage);
+            setError(errorCode)
           });
     
     };
@@ -38,14 +46,17 @@ const {signIn} = use(AuthContext);
         <fieldset className="fieldset">
             {/* Email */}
           <label className="label">Email</label>
-          <input type="email" className="input" name="email" placeholder="Email" />
+          <input type="email" className="input" name="email" placeholder="Email" required />
 
           {/* password */}
           <label className="label">Password</label>
-          <input type="password" className="input" name="password" placeholder="Password" />
+          <input type="password" className="input" name="password" placeholder="Password" required />
           <div><a className="link link-hover">Forgot password?</a></div>
 
-          
+          {
+            error && <p className=' text-red-500 text-xs'>{error}</p>
+
+          }
           <button type='submit' className="btn btn-neutral mt-4">Login</button>
 
           <p  className='font-semibold text-center pt-5'>Don’t Have An Account?{" "}<Link className='text-blue-500' to="/auth/register">Register</Link> </p>
